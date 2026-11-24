@@ -1,0 +1,317 @@
+{
+  "date": "2026-11-15",
+  "baseline": "bf4ba94915d8512dfd21609e08c348b522e5d783",
+  "comparison": "Before is the task-start dirty worktree (including existing 2D splash integration), not clean HEAD. Only three production files differ in the comparison project.",
+  "scope": [
+    "src/game/full_game/brush_system.gd",
+    "src/game/full_game/splash_frame_fx.gd",
+    "src/game/full_game/splash_frames.gdshader",
+    "src/game/full_game/performance_test.gd"
+  ],
+  "implementation": [
+    "Reuse per-stamp sphere meshes when cells/projection/quality are unchanged; atlas frame and drying opacity are shader uniforms.",
+    "Build affine UV projection once per mesh and reuse its basis at vertices.",
+    "Bound release scans with existing catalog geometry and cache contact times during sorting; retain exact cell and obstacle queries."
+  ],
+  "engine": {
+    "version": "Godot 4.7.2 stable",
+    "renderer": "Windows Compatibility OpenGL 3.3",
+    "adapter": "NVIDIA GeForce RTX 4060",
+    "driver": "621.01"
+  },
+  "cpu_breakdown": {
+    "method": "720 fixed 1/60s simulation steps; real actor updates every step, full world/UI updates every five, saves every thirty. Headless timings measure CPU work, not displayed FPS.",
+    "before": {
+      "actors": {
+        "max_ms": 50.988,
+        "mean_ms": 1.69469722222222,
+        "n": 720,
+        "p95_ms": 1.945
+      },
+      "save": {
+        "max_ms": 8.022,
+        "mean_ms": 5.80716666666666,
+        "n": 24,
+        "p95_ms": 6.865
+      },
+      "simulation": {
+        "max_ms": 82.283,
+        "mean_ms": 1.80095416666667,
+        "n": 720,
+        "p95_ms": 2.166
+      },
+      "splash": {
+        "max_ms": 2.644,
+        "mean_ms": 0.610722222222222,
+        "n": 144,
+        "p95_ms": 1.706
+      },
+      "ui": {
+        "max_ms": 4.356,
+        "mean_ms": 2.09689583333333,
+        "n": 144,
+        "p95_ms": 2.497
+      },
+      "world": {
+        "max_ms": 162.23,
+        "mean_ms": 86.3663125,
+        "n": 144,
+        "p95_ms": 130.923
+      }
+    },
+    "after": {
+      "actors": {
+        "max_ms": 35.541,
+        "mean_ms": 1.63578611111111,
+        "n": 720,
+        "p95_ms": 1.976
+      },
+      "save": {
+        "max_ms": 7.079,
+        "mean_ms": 5.70608333333333,
+        "n": 24,
+        "p95_ms": 6.908
+      },
+      "simulation": {
+        "max_ms": 12.049,
+        "mean_ms": 1.30358055555556,
+        "n": 720,
+        "p95_ms": 2.037
+      },
+      "splash": {
+        "max_ms": 2.668,
+        "mean_ms": 0.571506944444445,
+        "n": 144,
+        "p95_ms": 1.659
+      },
+      "ui": {
+        "max_ms": 3.123,
+        "mean_ms": 1.90940277777778,
+        "n": 144,
+        "p95_ms": 2.308
+      },
+      "world": {
+        "max_ms": 12.964,
+        "mean_ms": 3.68528472222222,
+        "n": 144,
+        "p95_ms": 7.83
+      }
+    }
+  },
+  "gpu_benchmark": {
+    "method": "performance_test.gd -- --benchmark; seed 111052, stationary hero, six stage-one pets, moving high-health scraper target, ambient spawning disabled, invulnerability, real attacks/deposits/autosave. Calls actual main physics/render methods at 1/60, awaits rendered frames, caps at 60FPS, excludes first 60 of 600 frames.",
+    "before": {
+      "adapter": "NVIDIA GeForce RTX 4060",
+      "checks": 2,
+      "display": "Windows",
+      "failures": [],
+      "frame": {
+        "max_ms": 165.666,
+        "mean_ms": 29.0921518518519,
+        "n": 540,
+        "over_33ms": 111,
+        "p95_ms": 130.284
+      },
+      "physics": {
+        "max_ms": 162.804,
+        "mean_ms": 21.5614814814815,
+        "n": 540,
+        "over_33ms": 111,
+        "p95_ms": 127.277
+      },
+      "render_limit_fps": 60,
+      "seed": 111052,
+      "simulation_seconds": 10,
+      "warmup_frames": 60
+    },
+    "after": {
+      "adapter": "NVIDIA GeForce RTX 4060",
+      "checks": 2,
+      "display": "Windows",
+      "failures": [],
+      "frame": {
+        "max_ms": 40.455,
+        "mean_ms": 16.6791611111111,
+        "n": 540,
+        "over_33ms": 1,
+        "p95_ms": 16.692
+      },
+      "physics": {
+        "max_ms": 37.645,
+        "mean_ms": 4.95452037037037,
+        "n": 540,
+        "over_33ms": 1,
+        "p95_ms": 11.508
+      },
+      "render_limit_fps": 60,
+      "seed": 111052,
+      "simulation_seconds": 10,
+      "warmup_frames": 60
+    },
+    "isolated_user_directories": true
+  },
+  "checks": [
+    {
+      "name": "performance_test",
+      "checks": 69,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "f0c32f59702130ff8b766bbf45b4bfd7b98e9aa36a5ba3d3dcf1578ea7532f62"
+    },
+    {
+      "name": "splash_frames_test",
+      "checks": 390,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "fde51ec94e8d9298abb1da36fa97ccbe5b03322fdd286b2636a43ed64cd941c7"
+    },
+    {
+      "name": "architecture_contract_test",
+      "checks": 199,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [
+        "WARNING: Exponent too high",
+        "WARNING: Exponent too high"
+      ],
+      "log_sha256": "609c740aabff8e0433d01ace5692218b113716a561bd79ea32c8896e638cea54"
+    },
+    {
+      "name": "paint_system_test",
+      "checks": 133,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "35c55463152e596ea857874466e634618bcada31f11e4261d64a0f7e63c8e3db"
+    },
+    {
+      "name": "node_auto_activation_test",
+      "checks": 51,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "dca14e5ad1e0e57ffdd8980c9930d2e262690ec00a80ee85d7b3bdf89cedc250"
+    },
+    {
+      "name": "auto_growth_test",
+      "checks": 238,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "ef10cc741102d9058c775ac34cca0c2fc4c5a63e3a7abdef500586bf1dc11e2f"
+    },
+    {
+      "name": "resume_flow_test",
+      "checks": 3161,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "704bb0a1681b795d114cee67df1097d340ed534b4333efd08bb282d3bbc650ff"
+    },
+    {
+      "name": "gpu_performance_test",
+      "checks": 69,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "970269707efde6a786c5671c743e9a9bb7418cd749001eafa11cf905ff245966"
+    },
+    {
+      "name": "gpu_splash_frames_test",
+      "checks": 407,
+      "passed": true,
+      "exit_code": 0,
+      "errors": [],
+      "warnings": [],
+      "log_sha256": "19bfeaf9f7855f376c24932049c4fe8d70d86034f6bf3874de6bf28081eb442e"
+    }
+  ],
+  "headless_checks": 4241,
+  "gpu_checks": 476,
+  "import_syntax_startup": {
+    "import": true,
+    "syntax": true,
+    "startup": true
+  },
+  "known_failure": {
+    "name": "paint_lifecycle_test",
+    "checks": 42,
+    "assertion_failures": 3,
+    "script_errors": 4,
+    "before_and_after_same": true,
+    "labels": [
+      "two-second proximity activates six guards",
+      "travel succeeds",
+      "travel clears old planet paint"
+    ],
+    "script_error_sites": [
+      "collision_checks:149",
+      "thin_wall:179",
+      "save_flight:93",
+      "legacy_protection:231"
+    ],
+    "before_log_sha256": "d154bb27ea469c5236de0f85b58ccb693e6e8dd83fbfbbe207fa0e997c9b1c35",
+    "after_log_sha256": "d154bb27ea469c5236de0f85b58ccb693e6e8dd83fbfbbe207fa0e997c9b1c35",
+    "disposition": "Existing lifecycle fixture failure reproduced using the exact task-start production files. Not counted as passed and not changed in this performance fix."
+  },
+  "manual_review": [
+    "Rendering cache holds only disposable meshes/materials; no writes to gameplay state, RNG, IDs, health or save schema. Entry removal also removes mesh cache and registered materials.",
+    "Geometry bounds and contact timing use existing catalog and Motion sources; independent broad-scan test checks all six brush shapes, active/ordinary, rotated directions, upgraded dimensions and obstacle masks.",
+    "Frame/opacity changes, quality switches, erased paint and same-seed new runs are covered. GPU screenshots and changed scene pixels were inspected."
+  ],
+  "warning_dispositions": {
+    "brush_system.gd::paint Q201": "Existing release transaction still snapshots, queries exact cells and registers stamps; bounds calculation isolated, no new gameplay authority.",
+    "paint_surface.gd::rebuild Q201": "Task-start 2D paint integration warning; this task did not modify this file.",
+    "splash_frame_fx.gd::update Q201": "Single rendering batch lifecycle retains material/mesh creation, updates and disposal together; read-only view, finite cache entries removed with stamps."
+  },
+  "not_claimed": [
+    "Mobile device tests",
+    "Human natural gameplay acceptance",
+    "Long-duration GPU or memory soak; GPU comparison is ten simulated seconds",
+    "Zero frame spikes: final comparison still has one frame above 33.33ms",
+    "Packaging, commit, push or publication"
+  ],
+  "commands": [
+    "python -B tools/verify_formal_architecture.py --godot _local/godot/Godot_v4.7.2-stable_win64_console.exe import syntax startup performance_test splash_frames_test architecture_contract_test paint_lifecycle_test paint_system_test node_auto_activation_test auto_growth_test resume_flow_test",
+    "python -B tools/verify_formal_architecture.py --godot _local/godot/Godot_v4.7.2-stable_win64_console.exe import syntax performance_test gpu_performance_test gpu_splash_frames_test",
+    "godot --path <isolated-project> --rendering-method gl_compatibility --script res://full_game/performance_test.gd -- --benchmark",
+    "python -B tools/lint.py",
+    "git diff --check"
+  ],
+  "source_sha256": {
+    "brush_system.gd": "7ddd39b20d6314671cd30c78d716688cd1f7e5f5999581f7036aee5e863afe7f",
+    "splash_frame_fx.gd": "ee7d05152c17c875f6c88022ab28951f3679fc606b85d990936f78aaf7e7fdb6",
+    "splash_frames.gdshader": "03fbaf373ddbba5ad7edb7fb1499ead5ec506b46e7f1cd81fc345d3a13157b95",
+    "performance_test.gd": "e995ff6c29fad2d3fa5b7dcecb9af3b248f7e6f158257fa314656dfd2f7212cd"
+  },
+  "before_sha256": {
+    "brush_system.gd": "a0e65ded5a33bfe9b5a881220d6c04a47ec5fc2925a1e374609cbd1ac45200ed",
+    "splash_frame_fx.gd": "a9f5b149cbeace7fa1526d1cb6a714d957bc6be58b4ea6721a3f292b42435fa9",
+    "splash_frames.gdshader": "c7ed2b2495958b227fd20c5b786a8d74e93d6de817fc1ce8532d67dbfc50b7fe"
+  },
+  "lint": {
+    "command": "python -B tools/lint.py",
+    "baseline": "bf4ba94915d8512dfd21609e08c348b522e5d783",
+    "passed": true,
+    "text_files": 417,
+    "code_files": 145,
+    "new_errors": 0,
+    "new_warnings": 3,
+    "existing_findings": 88,
+    "manual_review_completed": true
+  },
+  "diff_check": {
+    "command": "git diff --check",
+    "passed": true
+  }
+}
